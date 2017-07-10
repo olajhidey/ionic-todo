@@ -1,19 +1,13 @@
 <ion-header>
-  <ion-navbar primary>
-    <ion-title>
-      Ionic Blank
-    </ion-title>
+  <ion-navbar color="primary">
+    <ion-title>Welcome</ion-title>
   </ion-navbar>
 </ion-header>
-
 <ion-content padding>
-  <ion-list>
-      <ion-label fixed>Username</ion-label>
-      <ion-input type="text"></ion-input>
-  </ion-list>
-  <ion-list>
-      <ion-label fixed>Password</ion-label>
-      <ion-input type="password"></ion-input>
-  </ion-list>
-  <button primary>Sign in</button>
+    <ion-list>
+        <button ion-item *ngFor="let item of items" (click)="itemSelected(item)">
+          {{ item.text}}
+        </button>
+    </ion-list>
+
 </ion-content>
