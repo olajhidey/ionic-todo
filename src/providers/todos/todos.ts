@@ -101,6 +101,5 @@ export class TodosProvider {
         this.data.push(change.doc);
       }
     }
-
   }
 }
