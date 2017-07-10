@@ -81,7 +81,7 @@ export class TodosProvider {
     let changedIndex = null;
 
     this.data.forEach((doc, index) => {
-      if(doc._is === change.id) {
+      if(doc._id === change.id) {
         changedDoc = doc;
         changedIndex = index;
       }
