@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, AlertController } from 'ionic-angular';
+import { TodosProvider } from '../../providers/todos/todos';
 
 @Component({
   selector: 'page-home',
@@ -7,25 +8,76 @@ import { NavController } from 'ionic-angular';
 })
 export class HomePage {
 
-  items : any[];
+  todos: any;
 
-  constructor(public navCtrl: NavController) {
-    this.items = []
-    for(let i = 0; i <= 10; i++) {
-       this.items.push({
-      text : 'Item'+i,
-      id: i 
-    })
+  constructor(public navCtrl: NavController, public todoService: TodosProvider, public alertCtrl : AlertController) {
 
-    }
-   
   }
 
-  itemSelected(item) {
-    alert(item.text)
+  ionViewDidLoad() {
+
+    this.todoService.getTodos().then((data)=> {
+      this.todos = data;
+    });
+
   }
 
-  
+  createTodo() {
 
+    let prompt = this.alertCtrl.create({
+      title: 'Add',
+      message: 'What do you need to do?',
+      inputs: [
+        {
+          name: 'title'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel'
+        },
+        {
+          text: 'Save',
+          handler: data=>{
+            this.todoService.createTodo({title: data.title})
+          }
+        }
+      ]
+    });
 
+    prompt.present();
+  }
+
+  updateTodo(todo) {
+    
+    let prompt = this.alertCtrl.create({
+      title: 'Edit',
+      message: 'Change your mind?',
+      inputs: [
+        {
+          name: 'title'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel'
+        },
+        {
+          text: 'Save',
+          handler: data => {
+            this.todoService.updateTodo({
+              _id: todo._id,
+              _rev: todo._rev,
+              title: data.title
+            })
+          }
+        }
+      ]
+    });
+    prompt.present();
+  }
+
+  deleteTodo(todo) {
+    this.todoService.deleteTodo(todo);
+  }
 }
